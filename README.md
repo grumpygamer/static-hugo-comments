@@ -2,7 +2,7 @@ A single PHP file that allows comments on a static blog.
 
 The blog must be served by a web server that understands PHP so this isn't suitable for pure static delivery like a S3 bucket.
 
-It's been tested on Apache, but other should work just as well on others.
+It's been tested on Apache, but should work on other webservers.
 
 It's been tested on [HUGO](https://gohugo.io/), but probably works on other static sites.
 
