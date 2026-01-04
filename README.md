@@ -8,7 +8,7 @@ It's been tested on [HUGO](https://gohugo.io/), but probably works on other stat
 
 To install, copy `comments.php` to the `static` folder of your HUGO site.
 
-Also add this to an `.htaccess` file in the `static` directory.
+Also add this to an `.htaccess` file in the `static` directory. Create if it doesn't exist.
 ```
 AddHandler application/x-httpd-php .html
 ```
@@ -37,7 +37,7 @@ sudo apt-get install php-mbstring
 
 There are also several defines at the top of `comments.php` for customizations like captcha and notifying Discord of new comments.
 
-Comments can be stored in a Sqlite database or on disk as flat files.
+Comments can be stored in a Sqlite database or on disk as flat files. 4 out of 5 doctors recommend Sqlite.
 
 
 
