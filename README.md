@@ -1,6 +1,6 @@
 A single PHP file that allows comments on a static blog.
 
-The blog must be served by a web server that understands PHP so isn't suitable for pure static delivery like a S3 bucket.
+The blog must be served by a web server that understands PHP so this isn't suitable for pure static delivery like a S3 bucket.
 
 It's been tested on Apache, but other should work just as well on others.
 
@@ -8,24 +8,22 @@ It's been tested on [HUGO](https://gohugo.io/), but probably works on other stat
 
 To install, copy `comments.php` to the `static` folder of your HUGO site.
 
-Also add
+Also add this to an `.htaccess` file in the `static` directory.
 ```
 AddHandler application/x-httpd-php .html
 ```
-to an `.htaccess` file in the `static` directory.
 
-In the `single.html` HUGO file add the follow after the `.Content` is output.
+In the `single.html` HUGO file add the following after the `.Content` is output.
 ```
 {{ if .Params.comments }}
   {{ safeHTML "<?php require $_SERVER['DOCUMENT_ROOT'] . '/comments.php'; ?>" }}
 {{ end }}
 ```
 
-The post must have a
+The post must have this the header for entries that you wish to show comments.
 ```
 comments: true
 ```
-In the header for entries that you wish to show comments.
 
 You may need to install the following PHP extensions.
 
