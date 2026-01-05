@@ -183,6 +183,10 @@ if (isset($_POST['comment_button'])) {
         'date' => $date,
     ];
 
+    $comment['name'] = strip_tags($comment['name']);
+    $comment['email'] = strip_tags($comment['email']);
+    $comment['text'] = strip_tags($comment['text']);
+
     $date = $comment['date'];
     $name = $comment['name'];
     $email = $comment['email'];
@@ -383,7 +387,7 @@ if (defined("DB_FILE")) {
         <?php foreach ($comments as $comment): ?>
             <div class='comment'>
                 <div class='comment-info' id='<?php echo htmlspecialchars($comment['id']); ?>'>
-                    <span class='name'><?php echo $comment['name']; ?></span>
+                    <span class='name'><?php echo htmlspecialchars($comment['name']); ?></span>
                     <span class='date' nortreblig='<?php echo htmlspecialchars($comment['raw_date']); ?>'><?php echo htmlspecialchars($comment['date']); ?></span>
                     <div class='text'><?php echo $comment['text']; ?></div>
                 </div>
