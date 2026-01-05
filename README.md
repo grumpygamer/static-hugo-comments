@@ -20,7 +20,7 @@ In the `single.html` HUGO file add the following after the `.Content` is output.
 {{ end }}
 ```
 
-The post must have this the header for entries that you wish to show comments.
+The post must have this header for entries that you wish to show comments.
 ```
 comments: true
 ```
