@@ -1,49 +1,6 @@
 <?php
 
-// If you want to use sqlite3 from the command line, permissions need
-// be set so the sqlite3 doesn't block all writes.
-
-// # 1. Add your user to the www-data group (if not already there)
-// sudo usermod -aG www-data {USER}
-
-// # 2. Change ownership of the folder and file to the shared group
-// sudo chown -R www-data:www-data {DB_DIR}
-
-// # 3. Apply the 'Sticky Group' bit to the directory
-// # This ensures new files (like -wal and -shm) inherit the 'www-data' group
-// sudo chmod g+s {DB_DIR}
-
-// # 4. Set directory permissions so group members can write/execute
-// sudo chmod 775 {DB_DIR}
-
-// DB_DIR must be read/write for the web server
-define('DB_DIR', "path/to/dir");
-
-// Comment out this line to use flat files
-define('DB_FILE', DB_DIR."/db.sqlite");
-
-// File to disable all comments in an emergency (spam attack)
-define('KILL_FILE', DB_DIR."/kill");
-
-// Use ADMIN_SECRET for name to post as owner and getting check mark
-define('ADMIN_SECRET', "my_secret_username");
-// Replaces with these values
-define('ADMIN_NAME', "My Name");
-define('ADMIN_EMAIL', "my@email.com");
-
-// Notify discord if comment is spam
-define('SPAM_NOTIFY', true);
-
-// Save spam in db
-define('SPAM_SAVE', true);
-
-// Comment out for no capcha
-// Uses https://www.hcaptcha.com/
-define('CAPCHA_SECRET', "xxxxx");
-define('CAPCHA_DATAKEY', "xxxxx");
-
-// Discord webhook, comment out to disable Discord posting
-define('DISCORD_WEBHOOK', "https://discord.com/api/webhooks/xxxxx");
+require_once("config.php");
 
 $host = $_SERVER['HTTP_HOST'];
 $post = trim($_SERVER['REQUEST_URI'], "/");
@@ -127,13 +84,19 @@ function isSpam($text) {
 
 // ----------------------------------------------------------------------------
 function notifyComment($comment) {
+    global $host;
+
     if (defined("DISCORD_WEBHOOK")) {
         if ($comment['spam'] == true && !SPAM_NOTIFY) return
 
         $title = ""; // For reasons I don't understand, this is needed.
         $title = $comment['spam'] === true ? "New comment spam" : "New comment";
 
-        $content = "{$title} in {$comment['url']} from {$comment['name']}.";
+        $url = "[{$comment['url']}](<https://{$host}/{$comment['url']}#{$comment['id']}>)";
+        $content = "{$title} in {$url} from {$comment['name']}.";
+        if (defined("DISCORD_EXTRA")) {
+            $content .= DISCORD_EXTRA;
+        }
         $content .= "\n".mb_strimwidth($comment['text'], 0, 80, "...");
 
         $data = [
@@ -387,7 +350,7 @@ if (defined("DB_FILE")) {
         <?php foreach ($comments as $comment): ?>
             <div class='comment'>
                 <div class='comment-info' id='<?php echo htmlspecialchars($comment['id']); ?>'>
-                    <span class='name'><?php echo htmlspecialchars($comment['name']); ?></span>
+                    <span class='name'><?php echo $comment['name']; ?></span>
                     <span class='date' nortreblig='<?php echo htmlspecialchars($comment['raw_date']); ?>'><?php echo htmlspecialchars($comment['date']); ?></span>
                     <div class='text'><?php echo $comment['text']; ?></div>
                 </div>
