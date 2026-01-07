@@ -32,7 +32,7 @@ Examples for Ubuntu
 ```
 sudo apt install php-curl
 sudo apt install php-sqlite3
-sudo apt-get install php-mbstring
+sudo apt install php-mbstring
 ```
 
 There are also several defines at the top of `comments.php` for customizations like captcha and notifying Discord of new comments.
