@@ -97,8 +97,9 @@ function notifyComment($comment) {
         if (defined("DISCORD_EXTRA")) {
             $content .= DISCORD_EXTRA;
         }
-        $content .= "\n".mb_strimwidth($comment['text'], 0, 80, "...");
-
+        if (defined('PREVIEW_LENGTH') && PREVIEW_LENGTH > 0) {
+            $content .= "\n".mb_strimwidth($comment['text'], 0, PREVIEW_LENGTH, "...");
+        }
         $data = [
             "content" => $content,
             "username" => "Comment Robot"

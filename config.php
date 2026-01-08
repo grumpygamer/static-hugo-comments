@@ -45,4 +45,7 @@ define('CAPCHA_DATAKEY', "xxxxx");
 // Discord webhook, comment out to disable Discord posting
 define('DISCORD_WEBHOOK', "https://discord.com/api/webhooks/xxxxx");
 
+// Size of preview text sent to discord
+define('PREVIEW_LENGTH', 80)
+
 ?>
