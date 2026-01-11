@@ -92,8 +92,26 @@ function notifyComment($comment) {
         $title = ""; // For reasons I don't understand, this is needed.
         $title = $comment['spam'] === true ? "New comment spam" : "New comment";
 
+        $ip = $comment['ip'];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://ipinfo.io/$ip/json");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            $loc = "Loc Unknown";
+        } else {
+            $loc = json_decode($response, true);
+            curl_close($ch);
+            $city    = $loc['city']    ?? "City";
+            $region  = $loc['region']  ?? "Region";
+            $country = $loc['country'] ?? "Country";
+            $loc     = "$city $region $country";
+        }
+
         $url = "[{$comment['url']}](<https://{$host}/{$comment['url']}#{$comment['id']}>)";
-        $content = "{$title} in {$url} from {$comment['name']}.";
+        $content = "{$title} in {$url} from {$comment['name']}";
+        $content .= " in {$loc}.";
         if (defined("DISCORD_EXTRA")) {
             $content .= DISCORD_EXTRA;
         }
